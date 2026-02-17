@@ -159,3 +159,79 @@
   color: rgba(255, 255, 255, 0.5);
   opacity: 0.6;
 }
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .lyrics-spotlight {
+    left: 30%;
+    padding-right: 20px;
+  }
+
+  .spotlight-line.active {
+    font-size: 32px;
+  }
+
+  .spotlight-line.past-1,
+  .spotlight-line.next-1 {
+    font-size: 20px;
+  }
+
+  .spotlight-line.past-2,
+  .spotlight-line.next-2 {
+    font-size: 16px;
+  }
+
+  .lyrics-spotlight__lines {
+    gap: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .lyrics-spotlight {
+    left: 5%;
+    right: 5%;
+    top: auto;
+    bottom: 350px;
+    transform: none;
+    padding-right: 0;
+    max-height: 100px;
+    overflow: hidden;
+  }
+
+  .lyrics-spotlight__inner {
+    padding: 10px 12px;
+  }
+
+  .lyrics-spotlight__lines {
+    align-items: center;
+    gap: 8px;
+  }
+
+  .spotlight-line.active {
+    font-size: 18px;
+    padding: 2px 0;
+    text-align: center;
+    white-space: normal;
+  }
+
+  .spotlight-line.past-1,
+  .spotlight-line.next-1 {
+    font-size: 13px;
+    text-align: center;
+  }
+
+  /* Hide far lines on mobile to save space */
+  .spotlight-line.past-2,
+  .spotlight-line.next-2 {
+    display: none;
+  }
+
+  .spotlight-line.plain {
+    font-size: 14px;
+    text-align: center;
+  }
+
+  .lyrics-spotlight__status {
+    font-size: 12px;
+  }
+}

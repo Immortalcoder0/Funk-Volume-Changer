@@ -500,3 +500,233 @@ body {
   min-width: 40px;
   text-align: center;
 }
+
+/* ═══════════════════════════════════════════════════
+   RESPONSIVE BREAKPOINTS
+   ═══════════════════════════════════════════════════ */
+
+/* ── Small Laptops (≤1024px) ── */
+@media (max-width: 1024px) {
+  .video-wrapper {
+    max-width: 800px;
+  }
+
+  .audio-artwork {
+    width: 340px;
+    height: 340px;
+  }
+
+  .audio-wrapper {
+    gap: 40px;
+    padding: 0 30px 0 40px;
+  }
+}
+
+/* ── Tablets (≤768px) ── */
+@media (max-width: 768px) {
+  .video-section {
+    padding: 20px 15px 120px 15px;
+  }
+
+  .input-area {
+    top: 16px;
+    left: 16px;
+    right: 16px;
+  }
+
+  .url-input-inline {
+    min-width: 0;
+    font-size: 13px;
+  }
+
+  .mode-toggle {
+    top: 16px;
+    position: relative;
+    left: auto;
+    transform: none;
+    align-self: center;
+    margin-top: 60px;
+    margin-bottom: 10px;
+  }
+
+  .video-wrapper {
+    max-width: 100%;
+    border-radius: 10px;
+  }
+
+  .audio-artwork {
+    width: 300px;
+    height: 300px;
+  }
+
+  .audio-wrapper {
+    gap: 30px;
+    padding: 0 20px;
+    justify-content: center;
+  }
+
+  .controls-upper {
+    padding: 10px 16px;
+  }
+
+  .track-info {
+    min-width: 120px;
+  }
+
+  .volume-section {
+    min-width: 140px;
+  }
+
+  .playback-controls {
+    gap: 14px;
+  }
+
+  .progress-container.fullscreen {
+    padding: 0 16px;
+    gap: 10px;
+  }
+
+  .status-area {
+    top: 16px;
+    right: 16px;
+  }
+
+  .main-title {
+    font-size: 14px;
+  }
+
+  .ctrl-btn.play {
+    width: 44px;
+    height: 44px;
+  }
+}
+
+/* ── Phones (≤480px) ── */
+@media (max-width: 480px) {
+  .video-section {
+    padding: 10px 10px 100px 10px;
+  }
+
+  .input-area {
+    top: 10px;
+    left: 10px;
+    right: 10px;
+  }
+
+  .url-form-inline {
+    padding: 4px 10px;
+    border-radius: 24px;
+  }
+
+  .url-input-inline {
+    font-size: 12px;
+    min-width: 0;
+  }
+
+  .load-btn-inline {
+    width: 28px;
+    height: 28px;
+  }
+
+  .mode-toggle {
+    margin-top: 54px;
+    padding: 3px;
+  }
+
+  .mode-btn {
+    padding: 5px 14px;
+    font-size: 12px;
+  }
+
+  .video-wrapper {
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  }
+
+  .audio-artwork {
+    width: 200px;
+    height: 200px;
+    border-radius: 8px;
+  }
+
+  .audio-wrapper {
+    flex-direction: column;
+    gap: 16px;
+    padding: 70px 16px 0 16px;
+    justify-content: flex-start;
+    align-items: center;
+  }
+
+  /* Stack controls vertically on phones */
+  .controls-section {
+    min-height: auto;
+    padding-bottom: 10px;
+  }
+
+  .controls-upper {
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+  }
+
+  .track-info {
+    display: none;
+  }
+
+  .main-title {
+    font-size: 13px;
+    white-space: normal;
+    text-align: center;
+  }
+
+  .video-id {
+    font-size: 10px;
+  }
+
+  .playback-controls {
+    gap: 12px;
+    order: -1;
+  }
+
+  .ctrl-btn {
+    width: 34px;
+    height: 34px;
+  }
+
+  .ctrl-btn.play {
+    width: 42px;
+    height: 42px;
+  }
+
+  .ctrl-btn.sm {
+    width: 28px;
+    height: 28px;
+  }
+
+  .volume-section {
+    min-width: 0;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .progress-container.fullscreen {
+    padding: 0 12px;
+    gap: 8px;
+  }
+
+  .time {
+    font-size: 10px;
+    min-width: 32px;
+  }
+
+  .status-area {
+    display: none;
+  }
+
+  .error-float {
+    font-size: 11px;
+    white-space: normal;
+    top: 50px;
+  }
+}

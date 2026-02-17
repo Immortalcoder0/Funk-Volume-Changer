@@ -240,3 +240,48 @@
   font-weight: 600;
   white-space: nowrap;
 }
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .elastic-slider {
+    width: 240px;
+    gap: 10px;
+  }
+
+  .cannon-btn {
+    width: 44px;
+    height: 44px;
+  }
+
+  .cannon-icon {
+    width: 36px;
+    height: 36px;
+  }
+}
+
+@media (max-width: 480px) {
+  .elastic-slider {
+    width: 260px;
+    gap: 10px;
+  }
+
+  .cannon-btn {
+    width: 38px;
+    height: 38px;
+  }
+
+  .cannon-icon {
+    width: 30px;
+    height: 30px;
+  }
+
+  .elastic-slider__label {
+    width: 28px;
+    font-size: 10px;
+  }
+
+  .cannon-charge-label {
+    font-size: 9px;
+    top: -14px;
+  }
+}
