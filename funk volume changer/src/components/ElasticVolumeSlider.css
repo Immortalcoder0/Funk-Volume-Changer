@@ -1,0 +1,242 @@
+/* ── ElasticVolumeSlider ─────────────────────────── */
+
+.elastic-slider {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 320px;
+  user-select: none;
+  -webkit-user-select: none;
+  position: relative;
+}
+
+/* ── Cannon Wrapper ── */
+.cannon-wrapper {
+  position: relative;
+  flex-shrink: 0;
+}
+
+/* ── Cannon Button ── */
+.cannon-btn {
+  position: relative;
+  width: 52px;
+  height: 52px;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.cannon-btn:hover:not(:disabled) {
+  transform: scale(1.08);
+}
+
+.cannon-btn:active:not(:disabled) {
+  transform: scale(0.96);
+}
+
+.cannon-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+/* ── Speaker Icon layers ── */
+.cannon-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 44px;
+  height: 44px;
+  transform: translate(-50%, -50%);
+  transition: filter 0.2s ease;
+}
+
+/* Grey base layer (always visible) */
+.cannon-icon--base {
+  color: rgba(255, 255, 255, 0.25);
+}
+
+/* Purple fill layer (clipped by charge / volume) */
+.cannon-icon--fill {
+  color: #8B5CF6;
+  transition: clip-path 0.08s linear;
+}
+
+/* Charging pulse glow */
+.cannon-btn--charging .cannon-icon--fill {
+  filter: drop-shadow(0 0 8px rgba(139, 92, 246, 0.6));
+}
+
+.cannon-btn--charging {
+  animation: cannon-shake 0.12s infinite alternate;
+}
+
+@keyframes cannon-shake {
+  from {
+    transform: translate(0.5px, 0.5px);
+  }
+
+  to {
+    transform: translate(-0.5px, -0.5px);
+  }
+}
+
+/* Shoot recoil */
+.cannon-btn--shooting {
+  animation: cannon-recoil 0.3s ease-out;
+}
+
+@keyframes cannon-recoil {
+  0% {
+    transform: scale(1) translateX(0);
+  }
+
+  30% {
+    transform: scale(0.9) translateX(-4px);
+  }
+
+  100% {
+    transform: scale(1) translateX(0);
+  }
+}
+
+/* Charge level label */
+.cannon-charge-label {
+  position: absolute;
+  top: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 11px;
+  font-weight: 700;
+  color: #A78BFA;
+  white-space: nowrap;
+  pointer-events: none;
+  text-shadow: 0 0 8px rgba(139, 92, 246, 0.5);
+}
+
+/* ── SVG Track Area ── */
+.elastic-slider__track-wrap {
+  flex: 1;
+  height: 48px;
+  position: relative;
+  cursor: pointer;
+  touch-action: none;
+  margin-top: 10px;
+}
+
+.elastic-slider__svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  display: block;
+}
+
+/* Inactive track (background line) */
+.elastic-slider__track-bg {
+  stroke: rgba(255, 255, 255, 0.12);
+  stroke-width: 4;
+  stroke-linecap: round;
+  fill: none;
+}
+
+/* Active track (filled to thumb) */
+.elastic-slider__track-active {
+  stroke: #8B5CF6;
+  stroke-width: 4;
+  stroke-linecap: round;
+  fill: none;
+  filter: drop-shadow(0 0 4px rgba(139, 92, 246, 0.35));
+}
+
+/* Thumb circle */
+.elastic-slider__thumb {
+  fill: #8B5CF6;
+  filter: drop-shadow(0 0 6px rgba(139, 92, 246, 0.6));
+  cursor: grab;
+  transition: r 0.15s ease;
+}
+
+.elastic-slider__thumb:hover,
+.elastic-slider__thumb--dragging {
+  r: 10;
+}
+
+/* Thumb glow ring (hover/drag) */
+.elastic-slider__thumb-glow {
+  fill: rgba(139, 92, 246, 0.15);
+  pointer-events: none;
+}
+
+/* Volume label */
+.elastic-slider__label {
+  flex-shrink: 0;
+  width: 34px;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.55);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+}
+
+/* Disabled state */
+.elastic-slider--disabled {
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+/* ── Cannonball (positioned by react-spring parametric parabola) ── */
+.cannonball {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  margin-left: -6px;
+  margin-top: -6px;
+  background: radial-gradient(circle at 35% 35%, #C4B5FD, #7C3AED);
+  border-radius: 50%;
+  box-shadow:
+    0 0 10px rgba(139, 92, 246, 0.7),
+    0 0 20px rgba(139, 92, 246, 0.3);
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* ── Target Indicator (during charge) ── */
+.cannon-target-line {
+  position: absolute;
+  top: 0;
+  width: 2px;
+  height: 100%;
+  background: rgba(139, 92, 246, 0.5);
+  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: 5;
+}
+
+.cannon-target-line::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 8px;
+  height: 8px;
+  background: #8B5CF6;
+  border-radius: 50%;
+  box-shadow: 0 0 6px rgba(139, 92, 246, 0.5);
+}
+
+.cannon-target-txt {
+  position: absolute;
+  bottom: calc(100% + 4px);
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 10px;
+  color: #A78BFA;
+  font-weight: 600;
+  white-space: nowrap;
+}

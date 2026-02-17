@@ -1,0 +1,161 @@
+/* ─── Lyrics Spotlight Panel ────────────────────── */
+
+/* Register custom property for CSS animation */
+@property --sweep-pct {
+  syntax: '<percentage>';
+  initial-value: 0%;
+  inherits: false;
+}
+
+.lyrics-spotlight {
+  position: fixed;
+  right: 0;
+  left: 40%;
+  top: 62%;
+  transform: translateY(-50%);
+  z-index: 40;
+  pointer-events: none;
+  overflow: visible;
+  padding-right: 40px;
+}
+
+.lyrics-spotlight__inner {
+  padding: 28px 30px;
+  overflow: visible;
+}
+
+/* ─── Status (Loading / Error) ─────────────────── */
+
+.lyrics-spotlight__status {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 16px;
+  font-style: italic;
+  padding: 12px 0;
+}
+
+/* ─── Lines Container ──────────────────────────── */
+
+.lyrics-spotlight__lines {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 24px;
+  overflow: visible;
+  position: relative;
+  contain: layout style;
+}
+
+/* ─── Individual Lines ─────────────────────────── */
+
+.spotlight-line {
+  margin: 0;
+  padding: 4px 0;
+  max-width: 100%;
+  overflow: visible;
+  white-space: nowrap;
+  text-align: right;
+  /* Only transition GPU-friendly properties — avoid font-size/font-weight (layout reflow) */
+  transition:
+    font-size 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+    font-weight 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    filter 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-family: 'Circular Std', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  will-change: opacity, filter, font-size;
+  transform: translateZ(0);
+}
+
+/* Hidden lines — outside the 5-line window */
+.spotlight-line.hidden {
+  font-size: 0;
+  max-height: 0;
+  opacity: 0;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* Past lines */
+.spotlight-line.past-2 {
+  font-size: 20px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.15);
+  opacity: 0.2;
+  max-height: 60px;
+}
+
+.spotlight-line.past-1 {
+  font-size: 26px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.3);
+  opacity: 0.35;
+  max-height: 70px;
+}
+
+/* Active line — glow sweep progress */
+.spotlight-line.active {
+  font-size: 44px;
+  font-weight: 700;
+  opacity: 1;
+  padding: 6px 0;
+  max-height: 100px;
+  color: rgba(255, 255, 255, 0.3);
+}
+
+/* ─── Sweep animation (CSS-only, 60fps) ────────── */
+
+@keyframes sweep {
+  from {
+    --sweep-pct: 0%;
+  }
+
+  to {
+    --sweep-pct: 100%;
+  }
+}
+
+.spotlight-line.glow-sweep {
+  /* Gradient with soft blended edge (~10% blend zone) */
+  background: linear-gradient(to right,
+      #fff 0%,
+      #fff calc(var(--sweep-pct) - 5%),
+      rgba(255, 255, 255, 0.3) calc(var(--sweep-pct) + 5%),
+      rgba(255, 255, 255, 0.3) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter:
+    drop-shadow(0 0 6px rgba(255, 255, 255, 0.4)) drop-shadow(0 0 18px rgba(255, 255, 255, 0.15));
+
+  /* Pure CSS animation — duration set via --line-duration inline */
+  animation: sweep var(--line-duration, 3s) linear forwards;
+}
+
+/* Upcoming lines */
+.spotlight-line.next-1 {
+  font-size: 26px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.3);
+  opacity: 0.35;
+  max-height: 70px;
+}
+
+.spotlight-line.next-2 {
+  font-size: 20px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.15);
+  opacity: 0.2;
+  max-height: 60px;
+}
+
+/* Plain lyrics fallback */
+.spotlight-line.plain {
+  font-size: 20px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.5);
+  opacity: 0.6;
+}
