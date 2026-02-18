@@ -190,11 +190,11 @@
   .lyrics-spotlight {
     left: 5%;
     right: 5%;
-    top: auto;
-    bottom: 350px;
-    transform: none;
+    top: 40%;
+    bottom: auto;
+    transform: translateY(-50%);
     padding-right: 0;
-    max-height: 100px;
+    max-height: 120px;
     overflow: hidden;
   }
 

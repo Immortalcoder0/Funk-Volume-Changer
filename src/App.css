@@ -624,6 +624,11 @@ body {
     padding: 10px 10px 10px 10px;
     flex: 1 1 auto;
     min-height: 0;
+    justify-content: flex-start;
+  }
+
+  .center-content {
+    height: auto;
   }
 
   .input-area {
@@ -648,7 +653,8 @@ body {
   }
 
   .mode-toggle {
-    margin-top: 54px;
+    margin-top: 50px;
+    margin-bottom: 8px;
     padding: 3px;
   }
 
@@ -671,7 +677,7 @@ body {
   .audio-wrapper {
     flex-direction: column;
     gap: 16px;
-    padding: 70px 16px 0 16px;
+    padding: 10px 16px 0 16px;
     justify-content: flex-start;
     align-items: center;
   }
