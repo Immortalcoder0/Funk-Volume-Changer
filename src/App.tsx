@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react'
 import { Play, Pause, SkipBack, SkipForward, Music, Loader2, Shuffle, Repeat } from 'lucide-react'
 import ElasticVolumeSlider from './components/ElasticVolumeSlider'
 import LyricsSpotlight from './components/LyricsSpotlight'
+import { extractVibrantColor } from './utils/colorExtractor'
 import './App.css'
 
 // ─── Lyrics Types ─────────────────────────────────
@@ -80,6 +81,7 @@ function App() {
   const [lyricsError, setLyricsError] = useState('')
   const [activeLyricIdx, setActiveLyricIdx] = useState(-1)
   const [activeLyricDuration, setActiveLyricDuration] = useState(3)
+  const [glowColor, setGlowColor] = useState<[number, number, number]>([255, 255, 255])
 
 
   const playerRef = useRef<any>(null)
@@ -97,6 +99,19 @@ function App() {
     firstScriptTag.parentNode?.insertBefore(tag, firstScriptTag)
     window.onYouTubeIframeAPIReady = () => setIsApiLoaded(true)
   }, [])
+
+  // ── Extract vibrant color from thumbnail ──
+  useEffect(() => {
+    if (!videoId) return
+    const thumbUrl = `https://img.youtube.com/vi/${videoId}/mqdefault.jpg`
+    extractVibrantColor(thumbUrl).then(setGlowColor)
+  }, [videoId])
+
+  // ── Pipe glow color into CSS custom property ──
+  useEffect(() => {
+    const [r, g, b] = glowColor
+    document.documentElement.style.setProperty('--glow-rgb', `${r}, ${g}, ${b}`)
+  }, [glowColor])
 
   const volumeRef = useRef(volume)
 

@@ -129,7 +129,7 @@
   background-clip: text;
   -webkit-text-fill-color: transparent;
   filter:
-    drop-shadow(0 0 6px rgba(255, 255, 255, 0.4)) drop-shadow(0 0 18px rgba(255, 255, 255, 0.15));
+    drop-shadow(0 0 8px rgba(var(--glow-rgb, 255, 255, 255), 0.55)) drop-shadow(0 0 22px rgba(var(--glow-rgb, 255, 255, 255), 0.25)) drop-shadow(0 0 40px rgba(var(--glow-rgb, 255, 255, 255), 0.1));
 
   /* Pure CSS animation — duration set via --line-duration inline */
   animation: sweep var(--line-duration, 3s) linear forwards;
