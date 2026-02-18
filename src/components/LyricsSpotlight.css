@@ -63,7 +63,7 @@
     color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
     filter 0.4s cubic-bezier(0.4, 0, 0.2, 1),
     max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  font-family: 'Circular Std', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: 'Host Grotesk', 'Poppins', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   will-change: opacity, filter, font-size;
   transform: translateZ(0);
 }
