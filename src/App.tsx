@@ -3,45 +3,11 @@ import { Play, Pause, SkipBack, SkipForward, Music, Loader2, Shuffle, Repeat } f
 import ElasticVolumeSlider from './components/ElasticVolumeSlider'
 import LyricsSpotlight from './components/LyricsSpotlight'
 import { extractVibrantColor } from './utils/colorExtractor'
+import { fetchLyrics, type LrcLine } from './utils/lyricsService'
 import './App.css'
-
-// ─── Lyrics Types ─────────────────────────────────
-interface LrcLine {
-  time: number // seconds
-  text: string
-}
 
 
 // ─── Helpers ──────────────────────────────────────
-function cleanTitle(raw: string): string {
-  return raw
-    .replace(/\(.*?(official|video|audio|lyric|hd|4k|full|song|mv).*?\)/gi, '')
-    .replace(/\[.*?(official|video|audio|lyric|hd|4k|full|song|mv).*?\]/gi, '')
-    .replace(/\|.*/g, '')
-    .replace(/official\s*(music)?\s*video/gi, '')
-    .replace(/\blyrics?\b/gi, '')
-    .replace(/\bhd\b|\b4k\b|\bfull\s*video\b/gi, '')
-    .replace(/\bft\.?\s*/gi, '')
-    .replace(/\bfeat\.?\s*/gi, '')
-    .replace(/[\-–—]\s*$/, '')
-    .replace(/\s{2,}/g, ' ')
-    .trim()
-}
-
-function parseSyncedLyrics(raw: string): LrcLine[] {
-  const lines: LrcLine[] = []
-  for (const line of raw.split('\n')) {
-    const match = line.match(/^\[(\d{2}):(\d{2}\.\d{2})\]\s*(.*)/)
-    if (match) {
-      const mins = parseInt(match[1], 10)
-      const secs = parseFloat(match[2])
-      const text = match[3].trim()
-      if (text) lines.push({ time: mins * 60 + secs, text })
-    }
-  }
-  return lines
-}
-
 const extractVideoId = (url: string): string | null => {
   const patterns = [
     /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\s?]+)/,
@@ -207,11 +173,10 @@ function App() {
     return () => { if (progressIntervalRef.current) clearInterval(progressIntervalRef.current) }
   }, [playing, isReady])
 
+
   // ── Fetch lyrics when video title changes ──
   useEffect(() => {
     if (!videoTitle) return
-    const query = cleanTitle(videoTitle)
-    if (!query) return
 
     let cancelled = false
     setLyricsLoading(true)
@@ -220,19 +185,12 @@ function App() {
     setSyncedLines([])
     setActiveLyricIdx(-1)
 
-    fetch(`https://lrclib.net/api/search?q=${encodeURIComponent(query)}`, {
-      headers: { 'User-Agent': 'FunkVolumeChanger/1.0 (https://github.com)' }
-    })
-      .then(res => res.json())
-      .then((results: any[]) => {
+    fetchLyrics(videoTitle)
+      .then(({ plain, synced }) => {
         if (cancelled) return
-        // Pick the first non-instrumental result with lyrics
-        const best = results.find((r: any) => !r.instrumental && (r.syncedLyrics || r.plainLyrics))
-        if (best) {
-          setLyrics(best.plainLyrics || null)
-          if (best.syncedLyrics) {
-            setSyncedLines(parseSyncedLyrics(best.syncedLyrics))
-          }
+        if (plain || synced.length > 0) {
+          setLyrics(plain)
+          setSyncedLines(synced)
         } else {
           setLyricsError('No lyrics found for this track')
         }
@@ -370,6 +328,7 @@ function App() {
         lyricsError={lyricsError}
         lyrics={lyrics}
         activeLyricDuration={activeLyricDuration}
+        glowColor={glowColor}
       />
 
       {/* Ambient Background */}

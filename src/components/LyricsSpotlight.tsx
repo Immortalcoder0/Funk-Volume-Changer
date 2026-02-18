@@ -12,6 +12,7 @@ interface LyricsSpotlightProps {
   lyricsError: string
   lyrics: string | null
   activeLyricDuration: number
+  glowColor?: [number, number, number]
 }
 
 function getLineClass(idx: number, activeIdx: number): string | null {
@@ -31,9 +32,28 @@ export default function LyricsSpotlight({
   lyricsError,
   lyrics,
   activeLyricDuration,
+  glowColor = [255, 255, 255],
 }: LyricsSpotlightProps) {
   const hasLyrics = syncedLines.length > 0 || lyrics
   if (!hasLyrics && !lyricsLoading && !lyricsError) return null
+
+  const [gr, gg, gb] = glowColor
+
+  // Blend 60% white + 40% artwork color for the karaoke fill
+  const mix = (white: number, color: number, t: number) => Math.round(white * (1 - t) + color * t)
+  const t = 0.4 // blend ratio (0 = pure white, 1 = pure artwork color)
+  const fillR = mix(255, gr, t)
+  const fillG = mix(255, gg, t)
+  const fillB = mix(255, gb, t)
+
+  const sweepFill = `rgb(${fillR}, ${fillG}, ${fillB})`
+  const sweepDim = `rgba(${fillR}, ${fillG}, ${fillB}, 0.3)`
+
+  const glowFilter = [
+    `drop-shadow(0 0 8px rgba(${gr}, ${gg}, ${gb}, 0.55))`,
+    `drop-shadow(0 0 22px rgba(${gr}, ${gg}, ${gb}, 0.25))`,
+    `drop-shadow(0 0 40px rgba(${gr}, ${gg}, ${gb}, 0.1))`,
+  ].join(' ')
 
   return (
     <div className="lyrics-spotlight">
@@ -48,18 +68,25 @@ export default function LyricsSpotlight({
 
         {!lyricsLoading && !lyricsError && syncedLines.length > 0 && (
           <div className="lyrics-spotlight__lines">
-            {syncedLines.map((line, i) => {
-              const posClass = getLineClass(i, activeLyricIdx)
-              const isActive = posClass === 'active'
+            {[-2, -1, 0, 1, 2].map(offset => {
+              const i = activeLyricIdx + offset
+              if (i < 0 || i >= syncedLines.length) return null
+
+              const line = syncedLines[i]
+              const posClass = getLineClass(i, activeLyricIdx)!
+              const isActive = offset === 0
 
               return (
                 <p
+                  // Use actual line index as key so React tracks each line
+                  // through its position transitions (next→active→past)
                   key={i}
-                  className={`spotlight-line ${posClass ?? 'hidden'} ${isActive ? 'glow-sweep' : ''}`}
+                  className={`spotlight-line ${posClass} ${isActive ? 'glow-sweep' : ''}`}
                   style={isActive ? {
                     '--line-duration': `${activeLyricDuration}s`,
-                    // Force animation restart when active line changes
-                    animationName: 'sweep',
+                    '--sweep-fill': sweepFill,
+                    '--sweep-dim': sweepDim,
+                    filter: glowFilter,
                   } as React.CSSProperties : undefined}
                 >
                   {line.text}
