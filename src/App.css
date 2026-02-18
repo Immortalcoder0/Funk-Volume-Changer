@@ -603,8 +603,27 @@ body {
 
 /* ── Phones (≤480px) ── */
 @media (max-width: 480px) {
+  body {
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  .app-container {
+    height: auto;
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
+
+  .main-layout {
+    height: auto;
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
+
   .video-section {
-    padding: 10px 10px 100px 10px;
+    padding: 10px 10px 10px 10px;
+    flex: 1 1 auto;
+    min-height: 0;
   }
 
   .input-area {
@@ -657,10 +676,13 @@ body {
     align-items: center;
   }
 
-  /* Stack controls vertically on phones */
+  /* Controls in natural flow on phones */
   .controls-section {
+    position: relative;
+    background: none;
     min-height: auto;
-    padding-bottom: 10px;
+    padding: 0 0 16px 0;
+    flex-shrink: 0;
   }
 
   .controls-upper {
@@ -686,7 +708,6 @@ body {
 
   .playback-controls {
     gap: 12px;
-    order: -1;
   }
 
   .ctrl-btn {
@@ -708,7 +729,6 @@ body {
     min-width: 0;
     width: 100%;
     justify-content: center;
-    order: -2;
   }
 
   .progress-container.fullscreen {
