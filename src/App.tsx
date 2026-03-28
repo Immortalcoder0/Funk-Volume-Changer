@@ -55,6 +55,14 @@ function App() {
   const progressIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
   useEffect(() => {
+    // Check URL parameters first
+    const params = new URLSearchParams(window.location.search)
+    const v = params.get('v')
+    if (v) {
+      setVideoId(v)
+      setIsLoading(true)
+    }
+
     if (window.YT) {
       setIsApiLoaded(true)
       return
@@ -62,7 +70,11 @@ function App() {
     const tag = document.createElement('script')
     tag.src = 'https://www.youtube.com/iframe_api'
     const firstScriptTag = document.getElementsByTagName('script')[0]
-    firstScriptTag.parentNode?.insertBefore(tag, firstScriptTag)
+    if (firstScriptTag && firstScriptTag.parentNode) {
+      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag)
+    } else {
+      document.head.appendChild(tag)
+    }
     window.onYouTubeIframeAPIReady = () => setIsApiLoaded(true)
   }, [])
 
