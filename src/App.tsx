@@ -397,8 +397,13 @@ function App() {
           {/* Center Content: Video or Audio Layout */}
           <div className={`center-content ${mode}`}>
 
-            {/* Video Wrapper (always rendered to keep player active, hidden in audio mode) */}
-            <div className="video-wrapper" style={{ display: mode === 'video' ? 'flex' : 'none' }}>
+            {/* Video Wrapper (always rendered to keep player active, hidden visually in audio mode) */}
+            <div 
+              className="video-wrapper" 
+              style={mode === 'video' 
+                ? { display: 'flex' } 
+                : { position: 'absolute', width: '1px', height: '1px', opacity: 0, pointerEvents: 'none', overflow: 'hidden' }}
+            >
               {!videoId && !isLoading && (
                 <div className="placeholder-card">
                   <Music size={60} className="placeholder-icon" />
