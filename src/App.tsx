@@ -116,6 +116,7 @@ function App() {
           setDuration(event.target.getDuration())
           event.target.setVolume(volumeRef.current)
           setPlaying(true)
+          event.target.playVideo() // Force playback attempt
           // Get video title for lyrics
           const data = event.target.getVideoData()
           if (data?.title) setVideoTitle(data.title)
