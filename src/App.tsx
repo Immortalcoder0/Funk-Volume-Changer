@@ -58,9 +58,13 @@ function App() {
     // Check URL parameters first
     const params = new URLSearchParams(window.location.search)
     const v = params.get('v')
+    const m = params.get('mode')
     if (v) {
       setVideoId(v)
       setIsLoading(true)
+      if (m === 'audio') {
+        setMode('audio')
+      }
     }
 
     if (window.YT) {
